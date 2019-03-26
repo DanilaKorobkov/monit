@@ -1,0 +1,5 @@
+
+
+class IObserver:
+    pass
+
