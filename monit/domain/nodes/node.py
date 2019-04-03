@@ -1,4 +1,4 @@
-from MonitoringSystem.server import *
+from monit.data_source.zmq.server import *
 # Python
 
 

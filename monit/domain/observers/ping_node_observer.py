@@ -1,7 +1,7 @@
-from MonitoringSystem.observer import *
+from monit.domain.observers.observer import *
 # Internal
-from MonitoringSystem.network_node import NetworkNode
-from MonitoringSystem.common.decorators import override
+from monit.common.decorators import override
+from monit.data_source.network_node import NetworkNode
 # Python
 import platform
 import subprocess

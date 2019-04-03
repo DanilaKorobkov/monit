@@ -2,6 +2,7 @@
 import zmq
 import bson
 
+
 class Server:
 
     def __init__(self, port):

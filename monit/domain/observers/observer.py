@@ -1,4 +1,4 @@
-from MonitoringSystem.client import *
+from monit.data_source.zmq.client import *
 # Python
 import bson
 import time
