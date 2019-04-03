@@ -10,18 +10,20 @@ class Node(Server):
         self.whoami = whoami
 
 
-    def start_impl(self):
+    def work(self):
 
         iterObject = iter(self.start())
 
         while True:
 
             result = next(iterObject)
-
             result.update({'path': self.whoami + '/' + result.get('path')})
+
             print(result)
 
+            self.handleResult(result)
 
 
-node = Node(port = 7000, whoami = 'client_1')
-node.start_impl()
+    def handleResult(self, result):
+        raise NotImplementedError
+
