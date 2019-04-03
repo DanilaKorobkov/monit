@@ -8,8 +8,8 @@ import bson
 
 class SlaveNode(Node):
 
-    def __init__(self, port, whoami, receiver):
-        super().__init__(port, whoami)
+    def __init__(self, name, port, receiver):
+        super().__init__(name, port)
 
         self.receiver = receiver
 
@@ -31,5 +31,5 @@ class SlaveNode(Node):
 
 
 
-node = SlaveNode(port = 7000, whoami = 'client_1', receiver = NetworkNode(ip = '127.0.0.1', port = 7777))
+node = SlaveNode(port = 7000, name = 'client_1', receiver = NetworkNode(ip = '127.0.0.1', port = 7777))
 node.work()

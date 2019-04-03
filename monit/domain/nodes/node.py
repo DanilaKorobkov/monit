@@ -4,10 +4,10 @@ from monit.data_source.zmq.server import *
 
 class Node(Server):
 
-    def __init__(self, port, whoami):
+    def __init__(self, name, port):
         super().__init__(port)
 
-        self.whoami = whoami
+        self.name = name
 
 
     def work(self):
@@ -17,7 +17,7 @@ class Node(Server):
         while True:
 
             result = next(iterObject)
-            result.update({'path': self.whoami + '/' + result.get('path')})
+            result.update({'path': self.name + '/' + result.get('path')})
 
             print(result)
 
