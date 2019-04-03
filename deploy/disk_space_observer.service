@@ -1,0 +1,11 @@
+[Unit]
+Description = Disk space observer service
+
+[Service]
+Type = simple
+Restart = always
+Environment = "PYTHONPATH=/opt/monit/:$PYTHONPATH"
+ExecStart = /var/monit/env/bin/python3 /opt/monit/monit/domain/observers/disk_space_observer.py /var/monit/disk_space.conf
+
+[Install]
+WantedBy=multi-user.target
