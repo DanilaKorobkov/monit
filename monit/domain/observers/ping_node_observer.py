@@ -19,6 +19,7 @@ class PingNodeObserver(Observer):
 
         status = self.__ping(self.observedNetworkNode.ip)
         status = {'status': status}
+        print(status)
         return status
 
 
@@ -33,9 +34,9 @@ class PingNodeObserver(Observer):
 
 
 
-observer = PingNodeObserver(observeType = 'other',
-                            observeObject = 'server/network_connection',
-                            interval = 5,
-                            receiver = NetworkNode('127.0.0.1', 7000),
-                            observedNetworkNode = NetworkNode('google.com'))
-observer.observe()
+# observer = PingNodeObserver(observeType = 'other',
+#                             observeObject = 'server/network_connection',
+#                             interval = 5,
+#                             receiver = NetworkNode('127.0.0.1', 7000),
+#                             observedNetworkNode = NetworkNode('google.com'))
+# observer.observe()

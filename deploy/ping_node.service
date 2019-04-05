@@ -1,0 +1,11 @@
+[Unit]
+Description = Disk space observer service
+
+[Service]
+Type = simple
+Restart = always
+Environment = "PYTHONPATH=/opt/monit/:$PYTHONPATH"
+ExecStart = /home/user/Data/Other/Projects/monit/env/bin/python3 /home/user/Data/Other/Projects/monit/monit/domain/observers/observer_application_controller.py --config /var/monit/ping_node.conf
+
+[Install]
+WantedBy=multi-user.target

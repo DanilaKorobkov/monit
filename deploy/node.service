@@ -1,11 +1,11 @@
 [Unit]
-Description = Node Service
+Description = Disk space observer service
 
 [Service]
 Type = simple
 Restart = always
 Environment = "PYTHONPATH=/opt/monit/:$PYTHONPATH"
-ExecStart = /var/monit/env/bin/python3 /opt/monit/monit/domain/nodes/node_application_controller.py
+ExecStart = /home/user/Data/Other/Projects/monit/env/bin/python3 /home/user/Data/Other/Projects/monit/monit/domain/nodes/node_application_controller.py --config /var/monit/node.conf
 
 [Install]
 WantedBy=multi-user.target

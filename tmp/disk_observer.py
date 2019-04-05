@@ -5,7 +5,6 @@ from monit.data_source.network_node import NetworkNode
 # Python
 import os
 
-# TODO: Config: criticalThreshold
 
 class DiskSpaceObserver(Observer):
 

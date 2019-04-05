@@ -2,13 +2,23 @@
 from monit.domain.nodes.node_factory import NodeFactory
 # Python
 import yaml
+from argparse import ArgumentParser
 
 
 class NodeApplicationController:
 
     def __init__(self):
 
-        with yaml.load('/home/user/Data/Other/Projects/monit/node.conf') as nodeConfig:
+        parser = ArgumentParser()
+        parser.add_argument('--config', type = str)
+        args = parser.parse_args().__dict__
 
-            self.node = NodeFactory().createNodeUsing(nodeConfig)
-            self.node.start()
+        with open(args.get('config')) as nodeConfig:
+
+            config = yaml.load(nodeConfig, Loader = yaml.FullLoader)
+
+            self.node = NodeFactory().createNodeUsing(config)
+            self.node.work()
+
+
+a = NodeApplicationController()

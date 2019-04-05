@@ -31,5 +31,5 @@ class SlaveNode(Node):
 
 
 
-node = SlaveNode(port = 7000, name = 'client_1', receiver = NetworkNode(ip = '127.0.0.1', port = 7777))
-node.work()
+# node = SlaveNode(port = 7000, name = 'client_1', receiver = NetworkNode(ip = '127.0.0.1', port = 7777))
+# node.work()
