@@ -1,3 +1,5 @@
+# Internal
+from tmp.multicast_group import MulticastGroup
 # Python
 import zmq
 
@@ -9,12 +11,14 @@ class Subscriber:
         self.context = None
         self.socket = None
 
-    def connect(self, ip, port):
+
+    def subscribe(self, multicastGroup):
 
         self.context = zmq.Context()
-
         self.socket = self.context.socket(zmq.SUB)
-        self.socket.connect("epgm://239.1.1.1:5555")
+
+        self.socket.connect("epgm://{}:{}".format(multicastGroup.ip, multicastGroup.port))
+
         self.socket.setsockopt(zmq.SUBSCRIBE, b'')
 
 
@@ -30,7 +34,7 @@ class Subscriber:
 if __name__ == '__main__':
 
     s1 = Subscriber()
-    s1.connect('224.0.1.1', 5555)
+    s1.subscribe(MulticastGroup('239.1.1.1', 5555))
 
     iterObject = iter(s1.waitPackage())
 
