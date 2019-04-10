@@ -23,21 +23,24 @@ class Node:
         self.multicastPub.connect()
 
 
-    async def startLocal(self):
+    async def processLocal(self):
 
         while True:
+
             local = await self.localSub.process()
             await self.handlePackage(local)
 
 
-    async def startMulticast(self):
+    async def processRemote(self):
 
         while True:
+
             remote = await self.localSub.process()
             await self.handlePackage(remote)
 
 
     async def handlePackage(self, package):
+
         print('send to multicast', package)
         await self.multicastPub.send(package)
 
@@ -47,9 +50,8 @@ if __name__ == '__main__':
     node =  Node()
 
     try:
-
-        task1 = asyncio.ensure_future(node.startLocal())
-        task2 = asyncio.ensure_future(node.startMulticast())
+        task1 = asyncio.ensure_future(node.processLocal())
+        task2 = asyncio.ensure_future(node.processRemote())
 
         loop.run_forever()
 
