@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
 
     observer = DiskSpaceObserver(subject = Subject(path = '/os/disk/space'),
-                                 interval = 5,
+                                 interval = 20,
                                  port = 5553,
                                  criticalThresholdPercent = 70)
 

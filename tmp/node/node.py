@@ -19,7 +19,7 @@ class Node:
         self.multicastSub = MulticastSubscriber(MulticastGroup('239.1.1.1', 5554))
         self.multicastSub.subscribe()
 
-        self.multicastPub = MulticastPublisher('192.168.8.100', MulticastGroup('239.1.1.1', 5555))
+        self.multicastPub = MulticastPublisher('10.13.0.171', MulticastGroup('239.1.1.1', 5555))
         self.multicastPub.connect()
 
 
@@ -28,6 +28,7 @@ class Node:
         while True:
 
             local = await self.localSub.process()
+            local['subject']['path'] = '/client1' + local['subject']['path']
             await self.handlePackage(local)
 
 
@@ -35,14 +36,14 @@ class Node:
 
         while True:
 
-            remote = await self.localSub.process()
-            await self.handlePackage(remote)
+            remote = await self.multicastSub.process()
+            print('remote')
 
 
     async def handlePackage(self, package):
 
-        print('send to multicast', package)
-        await self.multicastPub.send(package)
+        print('handlePackage', package)
+        #await self.multicastPub.send(package)
 
 
 if __name__ == '__main__':

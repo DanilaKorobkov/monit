@@ -34,7 +34,7 @@ class MulticastSubscriber(ISubscriber):
             package = self._packageCodingStrategy.decode(data)
 
             print(package)
-            await package
+            return package
 
 
 if __name__ == '__main__':
