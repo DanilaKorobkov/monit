@@ -1,38 +1,50 @@
 # Internal
 from tmp.multicast_group import MulticastGroup
+from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
 # Python
 import zmq
 
 
 class Publisher:
 
-    def __init__(self):
+    def __init__(self, networkCardIp, multicastGroup, packageCodingStrategy):
 
-        self.context = None
-        self.socket = None
+        self.__context = None
+        self.__socket = None
 
+        self.__networkCardIp = networkCardIp
+        self.__multicastGroup = multicastGroup
 
-    def connect(self, networkCardIp, multicastGroup):
-
-        self.context = zmq.Context()
-        self.socket = self.context.socket(zmq.PUB)
-        self.socket.connect("epgm://{};{}:{}".format(networkCardIp, multicastGroup.ip, multicastGroup.port))
+        self.__packageCodingStrategy = packageCodingStrategy
 
 
-    def send(self, data):
-        self.socket.send(data)
+    def connect(self):
+
+        self.__context = zmq.Context()
+        self.__socket = self.__context.socket(zmq.PUB)
+
+        self.__socket.connect("epgm://{};{}:{}".format(self.__networkCardIp,
+                                                     self.__multicastGroup.ip,
+                                                     self.__multicastGroup.port))
+
+
+    def send(self, package):
+
+        data = self.__packageCodingStrategy.encode(package)
+        self.__socket.send(data)
 
 
 if __name__ == '__main__':
 
     import time
 
-    p1 = Publisher()
-    p1.connect(networkCardIp = '192.168.1.1',
-               multicastGroup = MulticastGroup('239.1.1.1', 5555))
+    p1 = Publisher(networkCardIp = '192.168.1.1',
+                   multicastGroup = MulticastGroup('239.1.1.1', 5555),
+                   packageCodingStrategy = BsonCodingStrategy())
+    p1.connect()
 
 
     while True:
 
         time.sleep(5)
-        p1.send(b'DDDDDDDDDDDDDDDDDDDDDDDDDDDDD')
+        p1.send({'data': b'ok'})
