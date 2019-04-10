@@ -7,8 +7,8 @@ import zmq
 
 class LocalSubscriber(ISubscriber):
 
-    def __init__(self, port, packageCodingStrategy):
-        super().__init__(packageCodingStrategy)
+    def __init__(self, port):
+        super().__init__()
 
         self._port = port
 
@@ -43,8 +43,7 @@ if __name__ == '__main__':
 
     from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
 
-    s1 = LocalSubscriber(port = 5554,
-                         packageCodingStrategy = BsonCodingStrategy())
+    s1 = LocalSubscriber(port = 5554)
 
     iterObject = iter(s1.process())
 

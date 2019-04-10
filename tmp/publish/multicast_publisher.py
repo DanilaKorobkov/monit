@@ -7,8 +7,8 @@ import zmq
 
 class MulticastPublisher(IPublisher):
 
-    def __init__(self, networkCardIp, multicastGroup, packageCodingStrategy):
-        super().__init__(packageCodingStrategy)
+    def __init__(self, networkCardIp, multicastGroup):
+        super().__init__()
 
         self._networkCardIp = networkCardIp
         self._multicastGroup = multicastGroup
@@ -40,8 +40,7 @@ if __name__ == '__main__':
     import time
 
     p1 = MulticastPublisher(networkCardIp = '192.168.1.1',
-                            multicastGroup = MulticastGroup('239.1.1.1', 5555),
-                            packageCodingStrategy = BsonCodingStrategy())
+                            multicastGroup = MulticastGroup('239.1.1.1', 5555))
     p1.connect()
 
 

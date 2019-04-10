@@ -7,8 +7,8 @@ import zmq
 
 class LocalPublisher(IPublisher):
 
-    def __init__(self, port, packageCodingStrategy):
-        super().__init__(packageCodingStrategy)
+    def __init__(self, port):
+        super().__init__()
 
         self._port = port
 
@@ -36,8 +36,7 @@ if __name__ == '__main__':
 
     import time
 
-    p1 = LocalPublisher(port = 5554,
-                        packageCodingStrategy = BsonCodingStrategy())
+    p1 = LocalPublisher(port = 5554)
     p1.connect()
 
 

@@ -5,8 +5,8 @@ import time
 
 class IObserver(LocalPublisher):
 
-    def __init__(self, subject, interval, port, packageCodingStrategy):
-        super().__init__(port, packageCodingStrategy)
+    def __init__(self, subject, interval, port):
+        super().__init__(port)
 
         self._subject = subject
         self._interval = interval
@@ -21,12 +21,12 @@ class IObserver(LocalPublisher):
             result = \
             {
                 'subject': self._subject.getDictPresentation(),
-                'result': self.process()
+                'result': self._process()
             }
             self.send(result)
 
             time.sleep(self._interval)
 
 
-    def process(self):
+    def _process(self):
         raise NotImplementedError

@@ -8,14 +8,14 @@ import os
 
 class DiskSpaceObserver(IObserver):
 
-    def __init__(self, subject, interval, port, packageCodingStrategy, criticalThresholdPercent):
-        super().__init__(subject, interval, port, packageCodingStrategy)
+    def __init__(self, subject, interval, port, criticalThresholdPercent):
+        super().__init__(subject, interval, port)
 
         self._criticalThresholdPercent = criticalThresholdPercent
 
 
     @override
-    def process(self):
+    def _process(self):
 
         statvfs = os.statvfs("/")
 
@@ -38,6 +38,5 @@ if __name__ == '__main__':
     observer = DiskSpaceObserver(subject = Subject(path = '/os/disk/space'),
                                  interval = 5,
                                  port = 5554,
-                                 packageCodingStrategy = BsonCodingStrategy(),
                                  criticalThresholdPercent = 70)
     observer.start()

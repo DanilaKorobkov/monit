@@ -7,8 +7,8 @@ import zmq
 
 class MulticastSubscriber(ISubscriber):
 
-    def __init__(self, multicastGroup, packageCodingStrategy):
-        super().__init__(packageCodingStrategy)
+    def __init__(self, multicastGroup):
+        super().__init__()
 
         self._multicastGroup = multicastGroup
 
@@ -45,8 +45,7 @@ if __name__ == '__main__':
     from tmp.multicast_group import MulticastGroup
     from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
 
-    s1 = MulticastSubscriber(multicastGroup = MulticastGroup('239.1.1.1', 5555),
-                             packageCodingStrategy = BsonCodingStrategy())
+    s1 = MulticastSubscriber(multicastGroup = MulticastGroup('239.1.1.1', 5555))
 
     iterObject = iter(s1.process())
 
