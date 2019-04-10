@@ -34,9 +34,14 @@ if __name__ == '__main__':
 
     from tmp.observe.subject import Subject
     from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
+    import asyncio
+
+
 
     observer = DiskSpaceObserver(subject = Subject(path = '/os/disk/space'),
                                  interval = 5,
-                                 port = 5554,
+                                 port = 5553,
                                  criticalThresholdPercent = 70)
-    observer.start()
+
+    asyncio.ensure_future(observer.start())
+    asyncio.get_event_loop().run_forever()

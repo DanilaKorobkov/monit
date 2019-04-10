@@ -15,6 +15,6 @@ class IPublisher:
         raise NotImplementedError
 
 
-    def send(self, package):
+    async def send(self, package):
         raise NotImplementedError
 

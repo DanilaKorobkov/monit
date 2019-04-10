@@ -2,7 +2,7 @@ from tmp.subscribe.i_subscriber import *
 # Internal
 from monit.common.decorators import override
 # Python
-import zmq
+import zmq, zmq.asyncio
 
 
 class LocalSubscriber(ISubscriber):
@@ -14,28 +14,25 @@ class LocalSubscriber(ISubscriber):
 
 
     @override
-    def process(self):
+    def subscribe(self):
 
-        self._subscribe()
-
-        while True:
-
-            data = self._socket.recv()
-            package = self._packageCodingStrategy.decode(data)
-
-            print(package)
-            yield package
-
-
-    @override
-    def _subscribe(self):
-
-        self._context = zmq.Context()
+        self._context = zmq.asyncio.Context()
         self._socket = self._context.socket(zmq.SUB)
 
         self._socket.bind("tcp://*:{}".format(self._port))
 
         self._socket.setsockopt(zmq.SUBSCRIBE, b'')
+
+
+    @override
+    async def process(self):
+
+        while True:
+
+            data = await self._socket.recv()
+
+            package = self._packageCodingStrategy.decode(data)
+            return package
 
 
 

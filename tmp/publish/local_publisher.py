@@ -3,6 +3,7 @@ from tmp.publish.i_publisher import *
 from monit.common.decorators import override
 # Python
 import zmq
+import zmq.asyncio
 
 
 class LocalPublisher(IPublisher):
@@ -16,17 +17,17 @@ class LocalPublisher(IPublisher):
     @override
     def connect(self):
 
-        self._context = zmq.Context()
+        self._context = zmq.asyncio.Context()
         self._socket = self._context.socket(zmq.PUB)
 
         self._socket.connect("tcp://127.0.0.1:{}".format(self._port))
 
 
     @override
-    def send(self, package):
+    async def send(self, package):
 
         data = self._packageCodingStrategy.encode(package)
-        self._socket.send(data)
+        await self._socket.send(data)
 
 
 

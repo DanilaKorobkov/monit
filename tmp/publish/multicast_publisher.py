@@ -2,7 +2,7 @@ from .i_publisher import *
 # Internal
 from monit.common.decorators import override
 # Python
-import zmq
+import zmq, zmq.asyncio
 
 
 class MulticastPublisher(IPublisher):
@@ -17,7 +17,7 @@ class MulticastPublisher(IPublisher):
     @override
     def connect(self):
 
-        self._context = zmq.Context()
+        self._context = zmq.asyncio.Context()
         self._socket = self._context.socket(zmq.PUB)
 
         self._socket.connect("epgm://{};{}:{}".format(self._networkCardIp,
@@ -25,10 +25,10 @@ class MulticastPublisher(IPublisher):
                                                       self._multicastGroup.port))
 
     @override
-    def send(self, package):
+    async def send(self, package):
 
         data = self._packageCodingStrategy.encode(package)
-        self._socket.send(data)
+        await self._socket.send(data)
 
 
 

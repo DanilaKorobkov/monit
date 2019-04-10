@@ -1,6 +1,6 @@
 from tmp.publish.local_publisher import *
 # Python
-import time
+import asyncio
 
 
 class IObserver(LocalPublisher):
@@ -12,7 +12,7 @@ class IObserver(LocalPublisher):
         self._interval = interval
 
 
-    def start(self):
+    async def start(self):
 
         self.connect()
 
@@ -23,9 +23,10 @@ class IObserver(LocalPublisher):
                 'subject': self._subject.getDictPresentation(),
                 'result': self._process()
             }
-            self.send(result)
+            await self.send(result)
 
-            time.sleep(self._interval)
+            print('send', result)
+            await asyncio.sleep(self._interval)
 
 
     def _process(self):

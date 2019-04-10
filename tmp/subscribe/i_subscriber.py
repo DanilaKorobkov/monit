@@ -16,5 +16,5 @@ class ISubscriber:
         raise NotImplementedError
 
 
-    def _subscribe(self):
+    def subscribe(self):
         raise NotImplementedError
