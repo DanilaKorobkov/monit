@@ -1,16 +1,16 @@
-from .i_subscriber import *
+from tmp.subscribe.i_subscriber import *
 # Internal
 from monit.common.decorators import override
 # Python
 import zmq
 
 
-class PublishSubscriber(ISubscriber):
+class LocalSubscriber(ISubscriber):
 
-    def __init__(self, multicastGroup, packageCodingStrategy):
+    def __init__(self, port, packageCodingStrategy):
         super().__init__(packageCodingStrategy)
 
-        self._multicastGroup = multicastGroup
+        self._port = port
 
 
     @override
@@ -33,8 +33,7 @@ class PublishSubscriber(ISubscriber):
         self._context = zmq.Context()
         self._socket = self._context.socket(zmq.SUB)
 
-        self._socket.connect("epgm://{}:{}".format(self._multicastGroup.ip,
-                                                   self._multicastGroup.port))
+        self._socket.bind("tcp://*:{}".format(self._port))
 
         self._socket.setsockopt(zmq.SUBSCRIBE, b'')
 
@@ -42,11 +41,10 @@ class PublishSubscriber(ISubscriber):
 
 if __name__ == '__main__':
 
-    from tmp.multicast_group import MulticastGroup
     from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
 
-    s1 = PublishSubscriber(multicastGroup = MulticastGroup('239.1.1.1', 5555),
-                           packageCodingStrategy = BsonCodingStrategy())
+    s1 = LocalSubscriber(port = 5554,
+                         packageCodingStrategy = BsonCodingStrategy())
 
     iterObject = iter(s1.process())
 

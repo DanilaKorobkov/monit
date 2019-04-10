@@ -1,16 +1,16 @@
-from tmp.subscribe.i_subscriber import *
+from .i_subscriber import *
 # Internal
 from monit.common.decorators import override
 # Python
 import zmq
 
 
-class RequestReplySubscriber(ISubscriber):
+class MulticastSubscriber(ISubscriber):
 
-    def __init__(self, port, packageCodingStrategy):
+    def __init__(self, multicastGroup, packageCodingStrategy):
         super().__init__(packageCodingStrategy)
 
-        self._port = port
+        self._multicastGroup = multicastGroup
 
 
     @override
@@ -24,9 +24,6 @@ class RequestReplySubscriber(ISubscriber):
             package = self._packageCodingStrategy.decode(data)
 
             print(package)
-
-            self._socket.send(self._packageCodingStrategy.encode({'status': 'ok'}))
-
             yield package
 
 
@@ -34,17 +31,23 @@ class RequestReplySubscriber(ISubscriber):
     def _subscribe(self):
 
         self._context = zmq.Context()
-        self._socket = self._context.socket(zmq.REP)
-        self._socket.bind("tcp://*:{}".format(self._port))
+        self._socket = self._context.socket(zmq.SUB)
+
+        self._socket.connect("epgm://{}:{}".format(self._multicastGroup.ip,
+                                                   self._multicastGroup.port))
+
+        self._socket.setsockopt(zmq.SUBSCRIBE, b'')
+
 
 
 if __name__ == '__main__':
 
+    from tmp.multicast_group import MulticastGroup
     from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
 
+    s1 = MulticastSubscriber(multicastGroup = MulticastGroup('239.1.1.1', 5555),
+                             packageCodingStrategy = BsonCodingStrategy())
 
-    s1 = RequestReplySubscriber(port = 5554,
-                                packageCodingStrategy = BsonCodingStrategy())
     iterObject = iter(s1.process())
 
     while True:
