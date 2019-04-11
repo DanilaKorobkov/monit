@@ -6,10 +6,10 @@ import platform
 import subprocess
 
 
-class PingNodeObserver(IObserver):
+class LinkObserver(IObserver):
 
-    def __init__(self, subject, interval, port, observedIp):
-        super().__init__(subject, interval, port)
+    def __init__(self, path, interval, port, observedIp):
+        super().__init__(path, interval, port)
 
         self._observedIp = observedIp
 
@@ -34,11 +34,11 @@ class PingNodeObserver(IObserver):
 
 if __name__ == '__main__':
 
-    from tmp.observe.subject import Subject
     from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
 
-    observer = PingNodeObserver(subject = Subject(path = '/network/ping/client1'),
-                                interval = 5,
-                                port = 5554,
-                                observedIp = 'google.com')
-    observer.start()
+    observer = LinkObserver(path = '/network/ping/client1',
+                            interval = 5,
+                            port = 5553,
+                            observedIp = 'google.com')
+    asyncio.ensure_future(observer.start())
+    asyncio.get_event_loop().run_forever()

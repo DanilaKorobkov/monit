@@ -5,10 +5,10 @@ import asyncio
 
 class IObserver(LocalPublisher):
 
-    def __init__(self, subject, interval, port):
+    def __init__(self, path, interval, port):
         super().__init__(port)
 
-        self._subject = subject
+        self._path = path
         self._interval = interval
 
 
@@ -18,11 +18,7 @@ class IObserver(LocalPublisher):
 
         while True:
 
-            result = \
-            {
-                'subject': self._subject.getDictPresentation(),
-                'result': self._process()
-            }
+            result = {'path': self._path, 'state': self._process()}
             await self.send(result)
 
             print('send', result)

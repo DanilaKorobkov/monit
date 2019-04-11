@@ -29,22 +29,3 @@ class MulticastPublisher(IPublisher):
 
         data = self._packageCodingStrategy.encode(package)
         await self._socket.send(data)
-
-
-
-if __name__ == '__main__':
-
-    from tmp.multicast_group import MulticastGroup
-    from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
-
-    import time
-
-    p1 = MulticastPublisher(networkCardIp = '192.168.1.1',
-                            multicastGroup = MulticastGroup('239.1.1.1', 5555))
-    p1.connect()
-
-
-    while True:
-
-        time.sleep(5)
-        p1.send({'data': b'ok'})

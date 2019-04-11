@@ -27,22 +27,7 @@ class LocalSubscriber(ISubscriber):
     @override
     async def process(self):
 
-        while True:
+        data = await self._socket.recv()
 
-            data = await self._socket.recv()
-
-            package = self._packageCodingStrategy.decode(data)
-            return package
-
-
-
-if __name__ == '__main__':
-
-    from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
-
-    s1 = LocalSubscriber(port = 5554)
-
-    iterObject = iter(s1.process())
-
-    while True:
-        next(iterObject)
+        package = self._packageCodingStrategy.decode(data)
+        return package

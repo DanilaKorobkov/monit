@@ -28,20 +28,3 @@ class LocalPublisher(IPublisher):
 
         data = self._packageCodingStrategy.encode(package)
         await self._socket.send(data)
-
-
-
-if __name__ == '__main__':
-
-    from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
-
-    import time
-
-    p1 = LocalPublisher(port = 5554)
-    p1.connect()
-
-
-    while True:
-
-        time.sleep(2)
-        p1.send({'data': b'ok'})

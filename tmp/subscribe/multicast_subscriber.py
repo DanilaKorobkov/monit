@@ -28,23 +28,7 @@ class MulticastSubscriber(ISubscriber):
     @override
     async def process(self):
 
-        while True:
+        data = await self._socket.recv()
 
-            data = await self._socket.recv()
-            package = self._packageCodingStrategy.decode(data)
-
-            print(package)
-            return package
-
-
-if __name__ == '__main__':
-
-    from tmp.multicast_group import MulticastGroup
-    from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
-
-    s1 = MulticastSubscriber(multicastGroup = MulticastGroup('239.1.1.1', 5555))
-
-    iterObject = iter(s1.process())
-
-    while True:
-        next(iterObject)
+        package = self._packageCodingStrategy.decode(data)
+        return package

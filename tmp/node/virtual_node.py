@@ -9,17 +9,15 @@ import asyncio
 loop = asyncio.get_event_loop()
 
 
-class Node:
+class VirtualNode:
 
-    def __init__(self, name):
+    def __init__(self, name, port):
 
         self._name = name
 
-        self.localSub = LocalSubscriber(5553)
+        self.localSub = LocalSubscriber(port)
         self.localSub.subscribe()
 
-        self.multicastSub = MulticastSubscriber(MulticastGroup('239.1.1.1', 5554))
-        self.multicastSub.subscribe()
 
         self.multicastPub = MulticastPublisher('10.13.0.171', MulticastGroup('239.1.1.1', 5554))
         self.multicastPub.connect()
@@ -32,15 +30,6 @@ class Node:
             await self.handlePackage(local)
 
 
-    async def processRemote(self):
-
-        while True:
-
-            remote = await self.multicastSub.process()
-            print('remote multicastPub send', remote)
-            await self.multicastPub.send(remote)
-
-
     async def handlePackage(self, package):
 
         package['path'] = '/' + self._name + package['path']
@@ -50,12 +39,10 @@ class Node:
 
 if __name__ == '__main__':
 
-    node =  Node('client1')
+    node =  VirtualNode('prima', 5552)
 
     try:
         task1 = asyncio.ensure_future(node.processLocal())
-        task2 = asyncio.ensure_future(node.processRemote())
-
         loop.run_forever()
 
     finally:

@@ -8,8 +8,8 @@ import os
 
 class DiskSpaceObserver(IObserver):
 
-    def __init__(self, subject, interval, port, criticalThresholdPercent):
-        super().__init__(subject, interval, port)
+    def __init__(self, path, interval, port, criticalThresholdPercent):
+        super().__init__(path, interval, port)
 
         self._criticalThresholdPercent = criticalThresholdPercent
 
@@ -32,14 +32,13 @@ class DiskSpaceObserver(IObserver):
 
 if __name__ == '__main__':
 
-    from tmp.observe.subject import Subject
     from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
     import asyncio
 
 
 
-    observer = DiskSpaceObserver(subject = Subject(path = '/os/disk/space'),
-                                 interval = 20,
+    observer = DiskSpaceObserver(path = '/os/disk/space',
+                                 interval = 2,
                                  port = 5553,
                                  criticalThresholdPercent = 70)
 
