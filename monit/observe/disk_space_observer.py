@@ -1,4 +1,4 @@
-from tmp.observe.i_observer import *
+from monit.observe.i_observer import *
 # Internal
 from monit.common.decorators import override
 # Python
@@ -32,14 +32,13 @@ class DiskSpaceObserver(IObserver):
 
 if __name__ == '__main__':
 
-    from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
     import asyncio
 
 
 
     observer = DiskSpaceObserver(path = '/os/disk/space',
                                  interval = 2,
-                                 port = 5553,
+                                 port = 1111,
                                  criticalThresholdPercent = 70)
 
     asyncio.ensure_future(observer.start())

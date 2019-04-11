@@ -1,4 +1,4 @@
-from tmp.publish.local_publisher import *
+from monit.publish.local_publisher import *
 # Python
 import asyncio
 

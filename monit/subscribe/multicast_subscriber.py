@@ -21,7 +21,6 @@ class MulticastSubscriber(ISubscriber):
 
         self._socket.connect("epgm://{}:{}".format(self._multicastGroup.ip,
                                                    self._multicastGroup.port))
-
         self._socket.setsockopt(zmq.SUBSCRIBE, b'')
 
 

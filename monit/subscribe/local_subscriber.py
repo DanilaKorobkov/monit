@@ -1,4 +1,4 @@
-from tmp.subscribe.i_subscriber import *
+from monit.subscribe.i_subscriber import *
 # Internal
 from monit.common.decorators import override
 # Python

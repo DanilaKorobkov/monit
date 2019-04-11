@@ -1,4 +1,4 @@
-from tmp.observe.i_observer import *
+from monit.observe.i_observer import *
 # Internal
 from monit.common.decorators import override
 # Python
@@ -34,11 +34,10 @@ class LinkObserver(IObserver):
 
 if __name__ == '__main__':
 
-    from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
-
     observer = LinkObserver(path = '/network/ping/client1',
                             interval = 5,
-                            port = 5553,
+                            port = 1111,
                             observedIp = 'google.com')
+
     asyncio.ensure_future(observer.start())
     asyncio.get_event_loop().run_forever()

@@ -1,5 +1,5 @@
 # Internal
-from tmp.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
+from monit.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
 
 class IPublisher:
 

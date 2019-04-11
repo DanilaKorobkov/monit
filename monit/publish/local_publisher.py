@@ -1,4 +1,4 @@
-from tmp.publish.i_publisher import *
+from monit.publish.i_publisher import *
 # Internal
 from monit.common.decorators import override
 # Python
