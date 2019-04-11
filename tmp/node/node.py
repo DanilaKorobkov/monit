@@ -6,8 +6,6 @@ from tmp.subscribe.multicast_subscriber import MulticastSubscriber
 # Python
 import asyncio
 
-loop = asyncio.get_event_loop()
-
 
 class Node:
 
@@ -53,11 +51,9 @@ if __name__ == '__main__':
     node =  Node('client1')
 
     try:
-        task1 = asyncio.ensure_future(node.processLocal())
-        task2 = asyncio.ensure_future(node.processRemote())
-
-        loop.run_forever()
+        tasks = asyncio.gather(node.processLocal(), node.processRemote())
+        asyncio.get_event_loop().run_until_complete(tasks)
 
     finally:
-        loop.close()
+        asyncio.get_event_loop().close()
 
