@@ -34,6 +34,10 @@ class VirtualNode:
             await self.localPub.send(local)
 
 
+    async def processRemote(self):
+        pass
+
+
     def handlePackage(self, package):
         package['path'] = '/' + self._name + package['path']
 

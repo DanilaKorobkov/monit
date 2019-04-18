@@ -1,0 +1,12 @@
+[Unit]
+Description = Client1 Node
+Wants = disk_space_observer.service link_client2.service
+
+[Service]
+Type = simple
+Restart = always
+Environment = "PYTHONPATH=/home/user/Data/Other/Projects/monit/:$PYTHONPATH"
+ExecStart = /home/user/Data/Other/Projects/monit/env/bin/python3 /home/user/Data/Other/Projects/monit/monit/run/run_node.py -c /home/user/Data/Other/Projects/monit/deploy/client1_virtual_node.conf
+
+[Install]
+WantedBy=multi-user.target

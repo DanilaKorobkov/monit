@@ -1,0 +1,11 @@
+[Unit]
+Description = Link with client2
+
+[Service]
+Type = simple
+Restart = always
+Environment = "PYTHONPATH=/home/user/Data/Other/Projects/monit/:$PYTHONPATH"
+ExecStart = /home/user/Data/Other/Projects/monit/env/bin/python3 /home/user/Data/Other/Projects/monit/monit/run/run_observer.py -c /home/user/Data/Other/Projects/monit/deploy/link_client2.conf
+
+[Install]
+WantedBy=multi-user.target
