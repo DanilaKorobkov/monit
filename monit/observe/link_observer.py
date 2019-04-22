@@ -34,8 +34,8 @@ class LinkObserver(IObserver):
 
 if __name__ == '__main__':
 
-    observer = LinkObserver(path = '/network/ping/client1',
-                            interval = 5,
+    observer = LinkObserver(path = '/link/google',
+                            interval = 2,
                             port = 1111,
                             observedIp = 'google.com')
 

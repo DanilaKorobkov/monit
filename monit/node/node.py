@@ -1,4 +1,5 @@
 # Internal
+from monit.tmp.deep_dict import AvkDict
 from monit.multicast_group import MulticastGroup
 from monit.publish.local_publisher import LocalPublisher
 from monit.subscribe.local_subscriber import LocalSubscriber
@@ -11,6 +12,9 @@ import asyncio
 class Node:
 
     def __init__(self, name, localSubsPort, multicastGroupIp, multicastGroupPort, ownIp, localPublishPort):
+
+        self.avkDict = AvkDict()
+        self.avkDict.deepUpdate({name: {}})
 
         self._name = name
 
@@ -31,7 +35,15 @@ class Node:
 
         while True:
             local = await self.localSub.process()
-            await self.handlePackage(local)
+            local = self.handlePackage(local)
+
+            self.avkDict.deepUpdate(local)
+
+            await self.multicastPub.send(self.avkDict.get(self._name))
+            print('self.multicastPub.send', self.avkDict.get(self._name))
+
+            await self.localPub.send(self.avkDict.dictionary)
+            print('self.localPub.send', self.avkDict.dictionary)
 
 
     async def processRemote(self):
@@ -39,15 +51,19 @@ class Node:
         while True:
 
             remote = await self.multicastSub.process()
+            self.avkDict.deepUpdate(remote)
+
             await self.localPub.send(remote)
 
 
-    async def handlePackage(self, package):
+    def handlePackage(self, package):
 
-        package['path'] = '/' + self._name + package['path']
+        result = package['path']
+        if package.get('virtual') is not True:
+            result = '/' + self._name + package['path']
 
-        await self.multicastPub.send(package)
-        await self.localPub.send(package)
+        result = AvkDict.convertPathToEmptyDict(result, package['state'])
+        return result
 
 
 if __name__ == '__main__':
