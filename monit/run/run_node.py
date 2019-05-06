@@ -23,8 +23,3 @@ if __name__ == '__main__':
 
     finally:
         asyncio.get_event_loop().close()
-
-
-
-
-

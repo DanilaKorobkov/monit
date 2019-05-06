@@ -1,6 +1,7 @@
 # Internal
 from monit.package_coding_strategy.bson_coding_strategy import BsonCodingStrategy
 
+
 class IPublisher:
 
     def __init__(self):
@@ -17,4 +18,3 @@ class IPublisher:
 
     async def send(self, package):
         raise NotImplementedError
-

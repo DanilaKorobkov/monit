@@ -1,4 +1,3 @@
-import collections
 
 
 class AvkDict:
@@ -51,26 +50,3 @@ class AvkDict:
             result = {key: result}
 
         return result
-
-
-
-if __name__ == '__main__':
-
-    a1 = {'client1': {'os': 1}}
-    b = {'client2': {'os': 2}}
-
-    a = AvkDict()
-    a.deepUpdate(a1)
-
-    a.deepUpdate(b)
-
-
-    c = '/os/disk/space'
-    c = c.split('/')[1: ]
-
-    result = {}
-
-    for key in reversed(c):
-        result = {key: result}
-
-    print(a.dictionary)

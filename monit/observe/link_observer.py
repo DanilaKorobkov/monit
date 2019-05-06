@@ -28,19 +28,3 @@ class LinkObserver(IObserver):
 
         command = ['ping', param, '1', host]
         return subprocess.call(command) == 0
-
-
-
-
-if __name__ == '__main__':
-
-    observer = LinkObserver(path = '/link/google',
-                            interval = 2,
-                            port = 1111,
-                            observedIp = 'google.com')
-
-    try:
-        asyncio.get_event_loop().run_until_complete(observer.start())
-
-    finally:
-        asyncio.get_event_loop().close()

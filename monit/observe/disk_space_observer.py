@@ -29,20 +29,3 @@ class DiskSpaceObserver(IObserver):
     def __fromBToGb(value):
 
         return value / (1024 ** 3)
-
-if __name__ == '__main__':
-
-    import asyncio
-
-
-
-    observer = DiskSpaceObserver(path = '/os/disk/space',
-                                 interval = 2,
-                                 port = 1111,
-                                 criticalThresholdPercent = 70)
-
-    try:
-        asyncio.get_event_loop().run_until_complete(observer.start())
-
-    finally:
-        asyncio.get_event_loop().close()
