@@ -17,5 +17,5 @@ class NodeFactory:
                     localSubsPort = config.get('localSubsPort'),
                     multicastGroupIp = config.get('multicastGroupIp'),
                     multicastGroupPort = config.get('multicastGroupPort'),
-                    ownIp = config.get('ownIp'),
+                    ownIps = config.get('ownIps'),
                     localPublishPort = config.get('localPublishPort'))

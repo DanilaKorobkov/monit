@@ -9,7 +9,7 @@ from monit.subscribe.multicast_subscriber import MulticastSubscriber
 
 class Node:
 
-    def __init__(self, name, localSubsPort, multicastGroupIp, multicastGroupPort, ownIp, localPublishPort):
+    def __init__(self, name, localSubsPort, multicastGroupIp, multicastGroupPort, ownIps, localPublishPort):
 
         self.avkDict = AvkDict()
         self.avkDict.deepUpdate({name: {}})
@@ -25,8 +25,13 @@ class Node:
         self.multicastSub = MulticastSubscriber(MulticastGroup(multicastGroupIp, multicastGroupPort))
         self.multicastSub.subscribe()
 
-        self.multicastPub = MulticastPublisher(ownIp, MulticastGroup(multicastGroupIp, multicastGroupPort))
-        self.multicastPub.connect()
+        if type(ownIps) is str:
+            ownIps = [ownIps]
+
+        self.multicastPublishers = [MulticastPublisher(ownIp, MulticastGroup(multicastGroupIp, multicastGroupPort)) for ownIp in ownIps]
+
+        for publisher in self.multicastPublishers:
+            publisher.connect()
 
 
     async def processLocal(self):
@@ -38,7 +43,9 @@ class Node:
 
             self.avkDict.deepUpdate(local)
 
-            await self.multicastPub.send(self.avkDict.get(self._name))
+            for publisher in self.multicastPublishers:
+                await publisher.send(self.avkDict.get(self._name))
+
             await self.localPub.send(self.avkDict.dictionary)
 
 

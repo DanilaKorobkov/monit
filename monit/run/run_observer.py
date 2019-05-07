@@ -1,5 +1,6 @@
 from monit.factories.observer_factory import ObserverFactory
 # Python
+import os
 import yaml
 import asyncio
 import argparse
@@ -12,8 +13,17 @@ if __name__ == '__main__':
 
     args = parser.parse_args().__dict__
 
-    with open(args.get('config'), 'r') as configFile:
+    pathToConfigFile = args.get('config')
+
+    with open(pathToConfigFile, 'r') as configFile:
         config = yaml.load(configFile)
+
+    pathToNodeConfigFile = os.path.join(os.path.dirname(pathToConfigFile), '{}.conf'.format(config.get('observer').get('connectWith')))
+    with open(pathToNodeConfigFile) as nodeConfigFile:
+
+        nodeConfig = yaml.load(nodeConfigFile).get('node')
+        config['observer']['localPublisherPort'] = nodeConfig.get('localSubsPort')
+
 
     observer = ObserverFactory.createObserver(config)
 
