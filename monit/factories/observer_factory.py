@@ -1,6 +1,7 @@
 # Internal
 from monit.observe.link_observer import LinkObserver
 from monit.observe.disk_space_observer import DiskSpaceObserver
+from monit.observe.keyboard_connection_observer import KeyboardConnectionObserver
 
 
 class ObserverFactory:
@@ -15,6 +16,9 @@ class ObserverFactory:
 
         if observerType == 'disk_space':
             return cls.createDiskSpaceObserver(config.get('observer'))
+
+        if observerType == 'keyboard_connection':
+            return cls.createKeyboardConnectionObserver(config.get('observer'))
 
 
     @staticmethod
@@ -33,3 +37,11 @@ class ObserverFactory:
                                  interval = config.get('interval'),
                                  port = config.get('localPublisherPort'),
                                  criticalThresholdPercent = config.get('criticalThresholdPercent'))
+
+
+    @staticmethod
+    def createKeyboardConnectionObserver(config):
+
+        return KeyboardConnectionObserver(path = config.get('path'),
+                                          interval = config.get('interval'),
+                                          port = config.get('localPublisherPort'))
