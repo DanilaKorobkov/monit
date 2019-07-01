@@ -1,16 +1,7 @@
-from monit.observe.i_observer import *
-# Internal
-from monit.common.decorators import override
-# Python
-import re, subprocess
+from monit.observe.base_input_device_observer import *
 
 
-class KeyboardConnectionObserver(IObserver):
+class KeyboardConnectionObserver(BaseInputDeviceObserver):
 
-    @override
-    def _process(self):
-
-        devices = subprocess.check_output('cat /proc/bus/input/devices', shell = True).decode('utf-8')
-
-        keyboards = re.findall(r'(Name=")(\w|\s)*(Keyboard)(")', devices)
-        return bool(keyboards)
+    def __init__(self, path, interval, port):
+        super().__init__(path, interval, port, 'Keyboard')

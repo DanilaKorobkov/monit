@@ -1,6 +1,7 @@
 # Internal
 from monit.observe.link_observer import LinkObserver
 from monit.observe.disk_space_observer import DiskSpaceObserver
+from monit.observe.mouse_connection_observer import MouseConnectionObserver
 from monit.observe.keyboard_connection_observer import KeyboardConnectionObserver
 
 
@@ -11,14 +12,17 @@ class ObserverFactory:
 
         observerType = config.get('type')
 
-        if observerType == 'link':
-            return cls.createLinkObserver(config.get('observer'))
+        creators = \
+        {
+            'link': cls.createLinkObserver,
+            'disk_space': cls.createDiskSpaceObserver,
+            'mouse_connection': cls.createMouseConnectionObserver,
+            'keyboard_connection': cls.createKeyboardConnectionObserver,
+        }
 
-        if observerType == 'disk_space':
-            return cls.createDiskSpaceObserver(config.get('observer'))
+        if observerType in creators:
+            return creators.get(observerType)(config.get('observer')) if observerType in creators else None
 
-        if observerType == 'keyboard_connection':
-            return cls.createKeyboardConnectionObserver(config.get('observer'))
 
 
     @staticmethod
@@ -37,6 +41,14 @@ class ObserverFactory:
                                  interval = config.get('interval'),
                                  port = config.get('localPublisherPort'),
                                  criticalThresholdPercent = config.get('criticalThresholdPercent'))
+
+
+    @staticmethod
+    def createMouseConnectionObserver(config):
+
+        return MouseConnectionObserver(path = config.get('path'),
+                                       interval = config.get('interval'),
+                                       port = config.get('localPublisherPort'))
 
 
     @staticmethod
