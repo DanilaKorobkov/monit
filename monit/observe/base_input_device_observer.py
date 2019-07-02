@@ -19,5 +19,5 @@ class BaseInputDeviceObserver(IObserver):
 
         devices = subprocess.check_output('cat /proc/bus/input/devices', shell = True).decode('utf-8')
 
-        keyboards = re.findall(r'({}=")(\w|\s)*(Keyboard)(")'.format(self.deviceName), devices)
+        keyboards = re.findall(r'(Name=")(\w|\s)*({})(")'.format(self.deviceName), devices)
         return bool(keyboards)

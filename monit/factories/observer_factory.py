@@ -1,8 +1,12 @@
 # Internal
 from monit.observe.link_observer import LinkObserver
+from monit.observe.cpu_load_observer import CPULoadObserver
 from monit.observe.disk_space_observer import DiskSpaceObserver
+from monit.observe.process_state_observer import ProcessStateObserver
 from monit.observe.mouse_connection_observer import MouseConnectionObserver
 from monit.observe.keyboard_connection_observer import KeyboardConnectionObserver
+# Python
+import os
 
 
 class ObserverFactory:
@@ -15,7 +19,9 @@ class ObserverFactory:
         creators = \
         {
             'link': cls.createLinkObserver,
+            'cpu_load': cls.createCPULoadObserver,
             'disk_space': cls.createDiskSpaceObserver,
+            'process_state': cls.createProcessStateObserver,
             'mouse_connection': cls.createMouseConnectionObserver,
             'keyboard_connection': cls.createKeyboardConnectionObserver,
         }
@@ -35,6 +41,15 @@ class ObserverFactory:
 
 
     @staticmethod
+    def createCPULoadObserver(config):
+
+        return CPULoadObserver(path = config.get('path'),
+                               interval = config.get('interval'),
+                               port = config.get('localPublisherPort'),
+                               criticalThresholdPercent = config.get('criticalThresholdPercent'))
+
+
+    @staticmethod
     def createDiskSpaceObserver(config):
 
         return DiskSpaceObserver(path = config.get('path'),
@@ -49,6 +64,16 @@ class ObserverFactory:
         return MouseConnectionObserver(path = config.get('path'),
                                        interval = config.get('interval'),
                                        port = config.get('localPublisherPort'))
+
+
+
+    @staticmethod
+    def createProcessStateObserver(config):
+
+        return ProcessStateObserver(path = os.path.join(config.get('path'), config.get('processName')),
+                                    interval = config.get('interval'),
+                                    port = config.get('localPublisherPort'),
+                                    processName = config.get('processName'))
 
 
     @staticmethod
